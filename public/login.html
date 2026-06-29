@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .login-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: #fff;
+      border-radius: 20px;
+      border: 1px solid #e2e8f0;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(15, 23, 42, 0.1);
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .login-card h2 {
+      margin-top: 0;
+      margin-bottom: 8px;
+      color: #1e3a8a;
+      font-size: 1.8rem;
+    }
+
+    .login-card p {
+      margin: 0 0 28px;
+      color: #475569;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #1f2937;
+      font-size: 0.95rem;
+    }
+
+    .password-wrapper {
+      position: relative;
+      display: flex;
+    }
+
+    .form-group input[type="text"],
+    .form-group input[type="password"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 15px;
+      font-family: Arial, sans-serif;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #1d4ed8;
+      box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.1);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #64748b;
+      font-size: 18px;
+      padding: 4px 8px;
+    }
+
+    .password-toggle:hover {
+      color: #1d4ed8;
+    }
+
+    .login-card button {
+      width: 100%;
+      margin-top: 24px;
+    }
+
+    #js-loginStatus {
+      margin-top: 16px;
+    }
+
+    #js-loginStatus.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-card">
+      <h2>Admin Login</h2>
+      <p>Enter your credentials to access the admin dashboard</p>
+
+      <form id="js-loginForm">
+        <div class="form-group">
+          <label for="js-username">Username</label>
+          <input id="js-username" type="text" placeholder="Enter username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="js-password">Password</label>
+          <div class="password-wrapper">
+            <input id="js-password" type="password" placeholder="Enter password" required>
+            <button type="button" class="password-toggle" id="js-togglePassword" title="Show/hide password">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" class="primary-btn">Login</button>
+      </form>
+
+      <div id="js-loginStatus" class="message-box hidden"></div>
+    </div>
+  </div>
+  <footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+  <script src="login.js"></script>
+</body>
+</html>

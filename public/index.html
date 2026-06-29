@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Biometric Attendance Management System</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<header class="page-header">
+
+<div>
+
+<h1>
+🎓 Biometric Attendance Management System
+</h1>
+
+<p>
+
+Facial Recognition Based Student Attendance Monitoring System
+
+</p>
+<p>
+Secure, fast and reliable student attendance using
+Facial Recognition Technology.
+</p>
+
+</div>
+
+<a href="login.html" class="nav-link">
+🔐 Admin Login
+</a>
+
+</header>
+
+
+<section class="home-hero">
+
+<h2>Welcome</h2>
+
+<p>
+
+This system automates student attendance using facial
+recognition technology. Students are registered once,
+recognized instantly, and attendance is recorded
+automatically without manual intervention.
+
+</p>
+
+</section>
+
+<section class="panel">
+
+    <div class="dashboard-clock">
+
+        <h2 id="js-currentTime"></h2>
+
+        <p id="js-currentDate"></p>
+
+    </div>
+
+</section>
+
+<section class="home-grid home-dashboard">
+
+<article class="home-card">
+
+<h3>👤 Register Student</h3>
+
+<p>
+
+Capture student details together with facial biometric
+data for future recognition.
+
+</p>
+
+<a href="register.html" class="button-link">
+Open Registration →
+</a>
+
+</article>
+
+
+<article class="home-card">
+
+<h3>📷 Mark Attendance</h3>
+
+<p>
+
+Recognize students in real time and automatically
+record attendance.
+
+</p>
+
+<a href="attendance.html" class="button-link">
+Open Attendance →
+</a>
+
+</article>
+
+
+<article class="home-card">
+
+<h3>🎓 Manage Students</h3>
+
+<p>
+
+Edit, update and manage all registered students
+stored in the database.
+
+</p>
+
+<a href="students.html" class="button-link">
+Manage Students →
+</a>
+
+</article>
+
+
+<article class="home-card">
+
+<h3>📜 Attendance History</h3>
+
+<p>
+
+Browse every attendance record with search and CSV
+download support.
+
+</p>
+
+<a href="history.html" class="button-link">
+View History →
+</a>
+
+</article>
+
+
+<article class="home-card">
+
+<h3>📊 Attendance Summary</h3>
+
+<p>
+
+View attendance percentages, reports and student
+performance summaries.
+
+</p>
+
+<a href="report.html" class="button-link">
+View Summary →
+</a>
+
+</article>
+
+
+<article class="home-card">
+
+<h3>📈 Dashboard</h3>
+
+<p>
+
+Monitor live statistics including total students,
+attendance records and today's attendance.
+
+</p>
+
+<a href="dashboard.html" class="button-link">
+Open Dashboard →
+</a>
+
+</article>
+
+</section>
+
+
+<section class="panel">
+
+<h2>System Features</h2>
+
+<div class="home-grid">
+
+<div class="home-card">
+
+<h3>😊 Facial Recognition</h3>
+
+<p>
+Fast biometric identity verification.
+</p>
+
+</div>
+
+<div class="home-card">
+
+<h3>⚡ Automatic Attendance</h3>
+
+<p>
+Attendance is marked automatically after successful
+recognition.
+</p>
+
+</div>
+
+<div class="home-card">
+
+<h3>🗄️ Secure Database</h3>
+
+<p>
+Student information and attendance records are stored
+securely in MySQL.
+</p>
+
+</div>
+
+<div class="home-card">
+
+<h3>📁 CSV Export</h3>
+
+<p>
+Generate downloadable attendance reports.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="panel">
+
+<h2>Technology Stack</h2>
+
+<p>
+
+HTML5 • CSS3 • JavaScript • Node.js • Express.js •
+MySQL • Face Recognition API
+
+</p>
+
+</section>
+
+<section class="panel">
+
+<h2>System Information</h2>
+
+<table class="system-table">
+
+<tr>
+
+<td>Project</td>
+
+<td>Biometric Attendance Management System</td>
+
+</tr>
+
+<tr>
+
+<td>Recognition Method</td>
+
+<td>Face Recognition</td>
+
+</tr>
+
+<tr>
+
+<td>Backend</td>
+
+<td>Node.js & Express.js</td>
+
+</tr>
+
+<tr>
+
+<td>Database</td>
+
+<td>MySQL</td>
+
+</tr>
+
+<tr>
+
+<td>Frontend</td>
+
+<td>HTML, CSS & JavaScript</td>
+
+</tr>
+
+<tr>
+
+<td>Reports</td>
+
+<td>CSV Export</td>
+
+</tr>
+
+</table>
+
+</section>
+
+<footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+  <script>
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("js-currentTime").innerText =
+        now.toLocaleTimeString();
+
+    document.getElementById("js-currentDate").innerText =
+        now.toDateString();
+
+}
+
+updateClock();
+
+setInterval(updateClock,1000);
+
+</script>
+</body>
+
+</html>
+

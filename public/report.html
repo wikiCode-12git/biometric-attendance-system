@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance Summary</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Page Header -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>Attendance Summary</h2>
+
+            <p>
+                View attendance statistics for all registered students.
+            </p>
+
+        </div>
+
+        <a href="index.html" class="nav-link">
+
+            ← Back Home
+
+        </a>
+
+    </div>
+
+
+    <!-- Download Button -->
+
+    <div class="summary-actions">
+
+        <a
+            href="/attendance-summary-csv"
+            class="secondary-btn"
+            download>
+
+            Download CSV
+
+        </a>
+
+    </div>
+
+
+    <!-- Status -->
+
+    <div
+        id="js-summaryStatus"
+        class="message-box">
+
+        Loading attendance summary...
+
+    </div>
+
+
+    <!-- Dashboard Cards -->
+
+    <div class="summary-cards">
+
+        <div class="summary-card">
+
+            <h3>Total Students</h3>
+
+            <h1 id="js-totalStudents">--</h1>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Present Today</h3>
+
+            <h1 id="js-presentToday">--</h1>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Attendance Rate</h3>
+
+            <h1 id="js-attendanceRate">--</h1>
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Attendance -->
+
+    <div class="panel">
+
+        <h3>Student Attendance Report</h3>
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="js-searchSummary"
+                class="search-input"
+                placeholder="Search by student name or matric number...">
+
+        </div>
+
+        <div
+            id="js-summaryList"
+            class="summary-list">
+
+        </div>
+
+    </div>
+
+</div>
+    <footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+<script src="report.js"></script>
+
+</body>
+
+</html>

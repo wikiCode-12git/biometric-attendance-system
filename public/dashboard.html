@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="home-hero">
+
+    <h2 id="js-greeting">
+        Welcome Administrator 👋
+    </h2>
+
+    <p>
+
+        Biometric Attendance Management System
+
+    </p>
+
+    <br>
+
+    <p>
+
+        <strong>Date:</strong>
+
+        <span id="js-currentDate"></span>
+
+    </p>
+
+    <p>
+
+        <strong>Time:</strong>
+
+        <span id="js-currentTime"></span>
+
+    </p>
+
+    <br>
+
+    <p>
+
+        🟢 <strong>System Status:</strong>
+
+        Online
+
+    </p>
+
+</div>
+
+        <div style="display:flex;gap:12px;">
+
+            <a
+                href="index.html"
+                class="nav-link">
+
+                ← Home
+
+            </a>
+
+            <button
+                id="js-logoutBtn"
+                class="nav-link"
+                style="background:#dc2626;border:none;cursor:pointer;">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </div>
+
+    
+    <!-- STATUS -->
+
+    <div
+        id="js-dashboardStatus"
+        class="message-box">
+
+        Loading dashboard...
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="summary-cards">
+
+        <div class="summary-card">
+
+            <h3>Total Students</h3>
+
+            <h1 id="js-totalStudents">--</h1>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Total Attendance Records</h3>
+
+            <h1 id="js-totalAttendance">--</h1>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Present Today</h3>
+
+            <h1 id="js-presentToday">--</h1>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Attendance Rate</h3>
+
+            <h1 id="js-attendanceRate">--</h1>
+
+        </div>
+
+    </div>
+
+
+    <!-- QUICK ACTIONS -->
+
+    <div class="panel">
+
+        <h3>Quick Actions</h3>
+
+        <div class="home-grid">
+
+            <a href="register.html" class="button-link">
+                ➜ Register Student
+            </a>
+
+            <a href="attendance.html" class="button-link">
+                ➜ Take Attendance
+            </a>
+
+            <a href="history.html" class="button-link">
+                ➜ Attendance History
+            </a>
+
+            <a href="report.html" class="button-link">
+                ➜ Attendance Summary
+            </a>
+
+            <a href="students.html" class="button-link">
+                ➜ Manage Students
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT ATTENDANCE -->
+
+    <div class="panel">
+
+        <h3>Recent Attendance</h3>
+
+        <div
+            id="js-recentAttendance"
+            class="history-list">
+
+            Loading...
+
+        </div>
+
+    </div>
+
+    <div class="panel">
+
+    <h3>Attendance Analytics</h3>
+
+    <canvas
+        id="attendanceChart"
+        height="120">
+
+    </canvas>
+
+</div>
+
+<div class="panel">
+
+    <h3>Live Activity Feed</h3>
+
+    <div
+        id="js-activityFeed"
+        class="activity-feed">
+
+    </div>
+
+</div>
+
+</div>
+<footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="dashboard.js"></script>
+
+</body>
+
+</html>

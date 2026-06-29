@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance History</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <div>
+
+            <h2>Attendance History</h2>
+
+            <p>
+                View all attendance records captured by the biometric system.
+            </p>
+
+        </div>
+
+        <a
+            href="index.html"
+            class="nav-link">
+
+            ← Back Home
+
+        </a>
+
+    </div>
+
+    <!-- SUMMARY CARDS -->
+
+    <div class="summary-cards">
+
+        <div class="summary-card">
+
+            <h3>Total Records</h3>
+
+            <h1 id="js-totalRecords">
+
+                --
+
+            </h1>
+
+        </div>
+
+        <div class="summary-card">
+
+            <h3>Present Today</h3>
+
+            <h1 id="js-todayRecords">
+
+                --
+
+            </h1>
+
+        </div>
+
+    </div>
+
+    <!-- SEARCH + DOWNLOAD -->
+
+    <div class="history-actions">
+
+        <input
+
+            type="text"
+
+            id="js-historySearch"
+
+            class="search-input"
+
+            placeholder="Search by name, matric number or department..."
+
+        >
+
+        <a
+
+            href="/attendance-history-csv"
+
+            class="secondary-btn"
+
+            download>
+
+            📥 Download CSV
+
+        </a>
+
+    </div>
+
+    <!-- STATUS -->
+
+    <div
+
+        id="js-historyStatus"
+
+        class="message-box">
+
+        Loading attendance history...
+
+    </div>
+
+    <!-- HISTORY PANEL -->
+
+    <div class="panel">
+
+        <h3>Attendance Records</h3>
+
+        <div
+
+            id="js-historyList"
+
+            class="history-list">
+
+        </div>
+
+    </div>
+
+</div>
+<footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+
+<script src="history.js"></script>
+
+</body>
+
+</html>

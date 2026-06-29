@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mark Attendance</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <div>
+        <h2>Mark Attendance</h2>
+        <p>Use live face recognition to record attendance for registered students.</p>
+      </div>
+      <a class="nav-link" href="index.html">Back to Home</a>
+    </header>
+
+    <div class="panel-row">
+      <section class="panel capture-panel">
+        <h3>Live Capture</h3>
+        <div class="capture-grid">
+          <div class="video-card">
+            <video id="js-video" autoplay muted playsinline></video>
+            <button type="button" id="js-captureBtn" class="secondary-btn">Capture Face</button>
+            <p id="js-status" class="status-text">Loading models...</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel attendance-panel">
+        <h3>Attendance Result</h3>
+        <div id="js-attendanceResult" class="message-box">Waiting for face capture to begin.</div>
+        <div id="js-lastStudent" class="student-info-card hidden">
+          <h4>Last Matched Student</h4>
+          <p><strong>Name:</strong> <span id="js-studentName">-</span></p>
+          <p><strong>Matric No:</strong> <span id="js-studentMatric">-</span></p>
+          <p><strong>Department:</strong> <span id="js-studentDept">-</span></p>
+        </div>
+        <div class="student-info-card">
+          <p>After a successful face match, attendance will be recorded and displayed here.</p>
+        </div>
+        
+      </section>
+    </div>
+
+    <canvas id="js-canvas" width="300" height="200" style="display:none;"></canvas>
+  </div>
+  <footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="attendance.js"></script>
+</body>
+</html>

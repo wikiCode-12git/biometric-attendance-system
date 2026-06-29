@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Students</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <div>
+        <h2>Manage Students</h2>
+        <p>View, edit, and delete student records from the system.</p>
+      </div>
+      <a class="nav-link" href="index.html">Back to Home</a>
+    </header>
+
+    <section class="panel">
+      <h3>Search & Filter</h3>
+      <input id="js-search" type="text" placeholder="Search by name or matric number" class="search-input" />
+    </section>
+
+    <div id="js-studentsStatus" class="message-box">Loading students...</div>
+
+    <section class="panel">
+      <h3>Student Records</h3>
+      <div id="js-studentsList" class="students-list">
+        <!-- Students rendered here -->
+      </div>
+    </section>
+  </div>
+  <footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+  <script src="students.js"></script>
+</body>
+</html>

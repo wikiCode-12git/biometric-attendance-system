@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Student</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <div>
+        <h2>Register Student</h2>
+        <p>Complete the form, capture a live face, and submit to register a student.</p>
+      </div>
+      <a class="nav-link" href="index.html">Back to Home</a>
+    </header>
+
+  <div class="panel-row">
+      <section class="panel form-panel">
+        <h3>Student Details</h3>
+        <form id="js-registerForm">
+          <label for="js-matric_no">Matric No</label>
+          <input type="text" id="js-matric_no" placeholder="Matric No" required>
+
+          <label for="js-name">Name</label>
+          <input type="text" id="js-name" placeholder="Full Name" required>
+
+          <label for="js-department">Department</label>
+          <input type="text" id="js-department" placeholder="Department" required>
+
+          <button type="submit" id="js-submitBtn" class="primary-btn" disabled>Register Student</button>
+        </form>
+
+        <div class="student-info-card">
+          <h4>Captured Student</h4>
+          <p><strong>Matric No:</strong> <span id="js-infoMatric">-</span></p>
+          <p><strong>Name:</strong> <span id="js-infoName">-</span></p>
+          <p><strong>Department:</strong> <span id="js-infoDepartment">-</span></p>
+        </div>
+      </section>
+
+      <section class="panel capture-panel">
+        <h3>Capture Face</h3>
+        <div class="capture-grid">
+          <div class="video-card">
+            <video id="js-video" autoplay muted playsinline></video>
+            <button type="button" id="js-captureBtn" class="secondary-btn">Capture Face</button>
+          </div>
+          <div class="preview-card">
+            <div class="preview-label">Captured Face Preview</div>
+            <div id="js-previewPlaceholder" class="preview-placeholder">No face captured yet.</div>
+            <img id="js-previewImage" src="" alt="Captured face preview" class="hidden">
+          </div>
+        </div>
+
+        <canvas id="js-canvas" width="300" height="200" style="display:none;"></canvas>
+        <p id="js-status" class="status-text">Loading models...</p>
+        <div id="js-message" class="message-box">Waiting for capture...</div>
+      </section>
+    </div>
+  </div>
+  <footer
+style="text-align:center;
+margin-top:40px;
+padding:20px;
+color:#64748b;
+font-size:15px;">
+
+<hr>
+
+<p>
+
+&copy; Biometric Attendance Management System
+
+</p>
+
+<p>
+
+Developed by:
+<strong>Wiki-Codex</strong>
+
+</p>
+
+<p>
+
+Department of Computer Science
+
+</p>
+
+<p>
+
+2026 Final Year Project
+
+</p>
+
+</footer>
+
+</div>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
