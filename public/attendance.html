@@ -15,6 +15,19 @@
       </div>
       <a class="nav-link" href="index.html">Back to Home</a>
     </header>
+    <section class="panel">
+  <h3>Select Course</h3>
+
+  <label for="js-course">Course</label>
+
+  <select id="js-course">
+    <option value="">Loading courses...</option>
+  </select>
+
+  <p style="margin-top:12px;color:#64748b;">
+    Attendance will be recorded for the selected course.
+  </p>
+</section>
 
     <div class="panel-row">
       <section class="panel capture-panel">
@@ -36,6 +49,9 @@
           <p><strong>Name:</strong> <span id="js-studentName">-</span></p>
           <p><strong>Matric No:</strong> <span id="js-studentMatric">-</span></p>
           <p><strong>Department:</strong> <span id="js-studentDept">-</span></p>
+          <p><strong>Level:</strong> <span id="js-studentLevel">-</span></p>
+
+          <p><strong>Course:</strong> <span id="js-courseName">-</span></p>
         </div>
         <div class="student-info-card">
           <p>After a successful face match, attendance will be recorded and displayed here.</p>

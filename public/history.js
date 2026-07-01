@@ -77,41 +77,60 @@ document.addEventListener("DOMContentLoaded", () => {
 
             card.className="history-item";
 
-            card.innerHTML=`
+            card.innerHTML = `
 
-                <div class="history-field">
-                    <label>Name</label>
-                    <span>${record.name}</span>
-                </div>
+            <div class="history-field">
+                <label>Student</label>
+                <span>${record.name}</span>
+            </div>
 
-                <div class="history-field">
-                    <label>Matric No</label>
-                    <span>${record.matric_no}</span>
-                </div>
+            <div class="history-field">
+                <label>Matric No</label>
+                <span>${record.matric_no}</span>
+            </div>
 
-                <div class="history-field">
-                    <label>Department</label>
-                    <span>${record.department}</span>
-                </div>
+            <div class="history-field">
+                <label>Department</label>
+                <span>${record.department}</span>
+            </div>
 
-                <div class="history-field">
-                    <label>Date</label>
-                    <span>${formatDate(record.date)}</span>
-                </div>
+            <div class="history-field">
+                <label>Level</label>
+                <span>${record.level || "-"}</span>
+            </div>
 
-                <div class="history-field">
-                    <label>Status</label>
+            <div class="history-field">
+                <label>Course Code</label>
+                <span>${record.course_code || "-"}</span>
+            </div>
 
-                    <span class="${badge(record.status)}">
+            <div class="history-field">
+                <label>Course Title</label>
+                <span>${record.course_title || "-"}</span>
+            </div>
 
-                        ${record.status}
+            <div class="history-field">
+                <label>Academic Session</label>
+                <span>${record.session_name || "-"}</span>
+            </div>
 
-                    </span>
+            <div class="history-field">
+                <label>Date</label>
+                <span>${formatDate(record.date)}</span>
+            </div>
 
-                </div>
+            <div class="history-field">
+                <label>Status</label>
 
-            `;
+    <span class="${badge(record.status)}">
 
+        ${record.status}
+
+    </span>
+
+</div>
+
+`;
             historyList.appendChild(card);
 
         });
@@ -170,19 +189,35 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const filtered=allHistory.filter(record=>{
 
-            return(
+            return (
 
-                record.name.toLowerCase().includes(keyword)
+    (record.name || "").toLowerCase().includes(keyword)
 
-                ||
+    ||
 
-                record.matric_no.toLowerCase().includes(keyword)
+    (record.matric_no || "").toLowerCase().includes(keyword)
 
-                ||
+    ||
 
-                record.department.toLowerCase().includes(keyword)
+    (record.department || "").toLowerCase().includes(keyword)
 
-            );
+    ||
+
+    (record.level || "").toLowerCase().includes(keyword)
+
+    ||
+
+    (record.course_code || "").toLowerCase().includes(keyword)
+
+    ||
+
+    (record.course_title || "").toLowerCase().includes(keyword)
+
+    ||
+
+    (record.session_name || "").toLowerCase().includes(keyword)
+
+);
 
         });
 

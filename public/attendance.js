@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', async function () {
   const studentName = document.getElementById('js-studentName');
   const studentMatric = document.getElementById('js-studentMatric');
   const studentDept = document.getElementById('js-studentDept');
+  const studentLevel = document.getElementById('js-studentLevel');
+  const courseName = document.getElementById('js-courseName');
+  const courseSelect = document.getElementById('js-course');
 
   const setStatus = (text) => {
     if (statusText) {
@@ -28,14 +31,32 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   };
 
-  const showStudentInfo = (student) => {
-    if (lastStudentCard && studentName && studentMatric && studentDept) {
-      studentName.innerText = student.name || '-';
-      studentMatric.innerText = student.matric_no || '-';
-      studentDept.innerText = student.department || '-';
-      lastStudentCard.classList.remove('hidden');
-    }
-  };
+  const showStudentInfo = (student, selectedCourse) => {
+
+  if (
+    lastStudentCard &&
+    studentName &&
+    studentMatric &&
+    studentDept
+  ) {
+
+    studentName.innerText = student.name || '-';
+
+    studentMatric.innerText = student.matric_no || '-';
+
+    studentDept.innerText = student.department || '-';
+
+    if (studentLevel)
+      studentLevel.innerText = student.level || '-';
+
+    if (courseName)
+      courseName.innerText = selectedCourse || '-';
+
+    lastStudentCard.classList.remove('hidden');
+
+  }
+
+};
 
   async function startCamera() {
     try {
@@ -75,13 +96,57 @@ document.addEventListener('DOMContentLoaded', async function () {
       throw err;
     }
   }
+  async function loadCourses() {
 
+  try {
+
+    const response = await fetch('/courses');
+
+    const courses = await response.json();
+
+    courseSelect.innerHTML = '<option value="">Select Course</option>';
+
+    courses.forEach(course => {
+
+      const option = document.createElement('option');
+
+      option.value = course.id;
+
+      option.textContent =
+        `${course.course_code} - ${course.course_title}`;
+
+      courseSelect.appendChild(option);
+
+    });
+
+  }
+
+  catch (err) {
+
+    console.error(err);
+
+    courseSelect.innerHTML =
+      '<option value="">Unable to load courses</option>';
+
+  }
+
+}
   await initializeBackend();
   await loadModels();
+  await loadCourses();
   await startCamera();
 
   captureBtn.addEventListener('click', async () => {
+    if (!courseSelect.value) {
 
+    setResult(
+        'Please select a course first.',
+        'error'
+    );
+
+    return;
+
+}
     if (video.readyState !== 4) {
       setResult('Camera not ready yet. Please wait for the video to start.', 'error');
       return;
@@ -110,48 +175,81 @@ document.addEventListener('DOMContentLoaded', async function () {
     try {
       const res = await fetch('/students');
       const students = await res.json();
-
+    
+      console.log("Number of students:", students.length);
       let bestMatch = null;
       let lowestDistance = 1;
 
       for (let student of students) {
-        if (!student.face_descriptor) continue;
+        if (!student.face_descriptor) {
+    continue;
+}
 
         let storedDescriptor;
-        try {
-          storedDescriptor = JSON.parse(student.face_descriptor);
-        } catch (err) {
-          console.warn('Invalid stored descriptor JSON for student', student.name, err);
-          continue;
-        }
+       try {
+    storedDescriptor = JSON.parse(student.face_descriptor);
+} catch (err) {
+    console.error(student.name, "JSON parse failed", err);
+    continue;
+}
 
-        if (!Array.isArray(storedDescriptor) || storedDescriptor.length !== liveDescriptor.length) {
-          continue;
-        }
+        if (!Array.isArray(storedDescriptor)) {
+    console.log(student.name, "Descriptor is not an array");
+    continue;
+}
+
+if (storedDescriptor.length !== liveDescriptor.length) {
+    console.log(
+        student.name,
+        "Wrong descriptor length:",
+        storedDescriptor.length,
+        "Expected:",
+        liveDescriptor.length
+    );
+    continue;
+}
 
         const distance = faceapi.euclideanDistance(liveDescriptor, new Float32Array(storedDescriptor));
-
+          console.log(
+          student.name,
+          student.id,
+          distance
+      );
         if (distance < lowestDistance) {
           lowestDistance = distance;
           bestMatch = student;
         }
       }
-
+        
       if (!bestMatch || lowestDistance >= 0.5) {
         setResult('Face not recognized. Attendance not recorded.', 'error');
-        console.log('NO MATCH', lowestDistance);
         return;
       }
 
-      showStudentInfo(bestMatch);
+      const selectedCourse =
+    courseSelect.options[
+        courseSelect.selectedIndex
+    ].text;
+
+    showStudentInfo(
+
+    bestMatch,
+
+    selectedCourse
+
+);
 
       const attendanceResponse = await fetch('/attendance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          student_id: bestMatch.id || null
-        })
-      });
+       body: JSON.stringify({
+
+    student_id: bestMatch.id,
+
+    course_id: courseSelect.value
+
+})
+        });
 
       const attendanceResult = await attendanceResponse.text();
       if (!attendanceResponse.ok) {
@@ -163,7 +261,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         throw new Error(attendanceResult || 'Attendance endpoint returned an error');
       }
 
-      setResult(`✅ Attendance recorded for ${bestMatch.name}`, 'success');
+      setResult(
+
+    `✅ ${bestMatch.name} marked present for ${selectedCourse}`,
+
+    'success'
+
+);
       setStatus(attendanceResult);
       console.log('MATCH FOUND:', bestMatch, lowestDistance);
     } catch (err) {

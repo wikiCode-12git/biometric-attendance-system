@@ -15,7 +15,13 @@ document.addEventListener('DOMContentLoaded', async function () {
   const infoMatric = document.getElementById('js-infoMatric');
   const infoName = document.getElementById('js-infoName');
   const infoDepartment = document.getElementById('js-infoDepartment');
-  const submitBtn = document.getElementById('js-submitBtn');
+  const infoLevel = document.getElementById('js-infoLevel');
+  const infoSession = document.getElementById('js-infoSession');
+
+  const levelSelect = document.getElementById('js-level');
+  const sessionSelect = document.getElementById('js-session');
+
+const submitBtn = document.getElementById('js-submitBtn');
 
   const state = {
     cameraReady: false,
@@ -77,11 +83,26 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (type === 'error') messageBox.classList.add('error');
   };
 
-  const updateStudentInfo = ({ matric_no, name, department }) => {
+  const updateStudentInfo = ({
+    matric_no,
+    name,
+    department,
+    level,
+    session
+}) => {
+
     if (infoMatric) infoMatric.innerText = matric_no || '-';
+
     if (infoName) infoName.innerText = name || '-';
+
     if (infoDepartment) infoDepartment.innerText = department || '-';
-  };
+
+    if (infoLevel) infoLevel.innerText = level || '-';
+
+    if (infoSession) infoSession.innerText = session || '-';
+
+};
+    
 
   // ===== CAMERA =====
   if (captureBtn) captureBtn.disabled = true;
@@ -137,6 +158,42 @@ document.addEventListener('DOMContentLoaded', async function () {
     await faceapi.tf.ready();
       
     await loadModels();
+    async function loadSessions() {
+
+    try {
+
+        const response = await fetch('/sessions');
+
+        const sessions = await response.json();
+
+        sessionSelect.innerHTML =
+            '<option value="">Select Session</option>';
+
+        sessions.forEach(session => {
+
+            sessionSelect.innerHTML += `
+
+                <option value="${session.id}">
+
+                    ${session.session_name}
+
+                </option>
+
+            `;
+
+        });
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+    }
+
+}
+
+await loadSessions();
     state.modelsReady = true;
     updateCaptureAvailability();
 
@@ -194,7 +251,24 @@ document.addEventListener('DOMContentLoaded', async function () {
     const matricInput = document.getElementById('js-matric_no');
     const nameInput = document.getElementById('js-name');
     const departmentInput = document.getElementById('js-department');
+    const levelInput = document.getElementById('js-level');
+      updateStudentInfo({
 
+    matric_no: matricInput?.value,
+
+    name: nameInput?.value,
+
+    department: departmentInput?.value,
+
+    level: levelInput?.value,
+
+    session:
+        sessionInput.options[
+            sessionInput.selectedIndex
+        ]?.text
+
+});
+    const sessionInput = document.getElementById('js-session');
     updateStudentInfo({
       matric_no: matricInput?.value,
       name: nameInput?.value,
@@ -218,13 +292,23 @@ document.addEventListener('DOMContentLoaded', async function () {
     const departmentField = document.getElementById('js-department');
 
     const data = {
-      matric_no: matricField?.value || '',
-      name: nameField?.value || '',
-      department: departmentField?.value || '',
-      face_data: window.capturedFace,
-      face_descriptor: Array.from(window.faceDescriptor)
-    };
 
+    matric_no: matricField?.value || '',
+
+    name: nameField?.value || '',
+
+    department: departmentField?.value || '',
+
+    level: levelSelect.value,
+
+    session_id: sessionSelect.value,
+
+    face_data: window.capturedFace,
+
+    face_descriptor:
+        Array.from(window.faceDescriptor)
+
+};
     try {
       const response = await fetch('/register', {
         method: 'POST',
@@ -236,7 +320,16 @@ document.addEventListener('DOMContentLoaded', async function () {
       setMessage(responseText, response.ok ? 'success' : 'error');
 
       if (response.ok) {
-        updateStudentInfo(data);
+        updateStudentInfo({
+
+    ...data,
+
+    session:
+        sessionSelect.options[
+            sessionSelect.selectedIndex
+        ]?.text
+
+});;
         state.faceCaptured = false;
         if (submitBtn) submitBtn.disabled = true;
         window.faceDescriptor = null;

@@ -221,16 +221,51 @@ const absentToday =
 
 // Get all students 
 app.get('/students', (req, res) => {
-  const sql = "SELECT * FROM students";
 
-  db.query(sql, (err, result) => {
-    if(err) {
-      console.error(err)
-      res.json([]);
-    } else {
-      res.json(result);
-    }
-  });
+    const sql = `
+
+       SELECT
+
+students.id,
+
+students.matric_no,
+
+students.name,
+
+students.department,
+
+students.level,
+
+students.session_id,
+
+students.face_descriptor,
+
+students.face_data,
+
+sessions.session_name
+
+FROM students
+
+LEFT JOIN sessions
+
+ON students.session_id = sessions.id
+
+ORDER BY students.name ASC    `;
+
+    db.query(sql, (err, results) => {
+
+        if (err) {
+
+            console.error(err);
+
+            return res.json([]);
+
+        }
+
+        res.json(results);
+
+    });
+
 });
 
 // Delete a student
@@ -264,90 +299,280 @@ app.delete('/students/:id', (req, res) => {
 
 // Update a student
 app.put('/students/:id', (req, res) => {
-  const { id } = req.params;
-  const { matric_no, name, department } = req.body;
 
-  if (!matric_no || !name || !department) {
+  const { id } = req.params;
+
+  const {
+
+    matric_no,
+
+    name,
+
+    department,
+
+    level,
+
+    session_id
+
+  } = req.body;
+
+  if (
+    !matric_no ||
+    !name ||
+    !department ||
+    !level ||
+    !session_id
+  ) {
     return res.status(400).send('Missing student data');
   }
 
   const sql = `
-    UPDATE students
-    SET matric_no = ?, name = ?, department = ?
-    WHERE id = ?
+
+      UPDATE students
+
+      SET
+
+          matric_no = ?,
+
+          name = ?,
+
+          department = ?,
+
+          level = ?,
+
+          session_id = ?
+
+      WHERE id = ?
+
   `;
 
-  db.query(sql, [matric_no, name, department, id], (err, result) => {
-    if (err) {
-      console.error('Update student failed:', err);
-      return res.status(500).send('Error updating student');
-    }
-    if (result.affectedRows === 0) {
-      return res.status(404).send('Student not found');
-    }
-    res.send('Student updated successfully');
-  });
+  db.query(
+
+      sql,
+
+      [
+
+          matric_no,
+
+          name,
+
+          department,
+
+          level,
+
+          session_id,
+
+          id
+
+      ],
+
+      (err, result) => {
+
+          if (err) {
+
+              console.error(err);
+
+              return res.status(500).send('Error updating student');
+
+          }
+
+          if (result.affectedRows === 0) {
+
+              return res.status(404).send('Student not found');
+
+          }
+
+          res.send('Student updated successfully');
+
+      }
+
+  );
+
 });
 
 // Record attendance
 app.post('/attendance', (req, res) => {
-  const { student_id } = req.body;
 
-  if (!student_id) {
-    return res.status(400).send('Missing student_id');
+  const { student_id, course_id } = req.body;
+
+  if (!student_id || !course_id) {
+
+    return res.status(400).send('Missing student or course');
+
   }
 
   const checkSql = `
-    SELECT id FROM attendance
-    WHERE student_id = ?
+
+      SELECT id
+
+      FROM attendance
+
+      WHERE student_id = ?
+
+      AND course_id = ?
+
       AND DATE(date) = CURDATE()
-    LIMIT 1
+
+      LIMIT 1
+
   `;
 
-  db.query(checkSql, [student_id], (checkErr, checkResult) => {
-    if (checkErr) {
-      console.error('Attendance check failed:', checkErr);
-      return res.status(500).send('Error checking attendance');
-    }
+  db.query(
 
-    if (checkResult.length > 0) {
-      return res.status(409).send('Attendance already recorded for today');
-    }
+      checkSql,
 
-    const insertSql = `
-      INSERT INTO attendance
-      (student_id, date, status)
-      VALUES (?, NOW(), ?)
-    `;
+      [
 
-    db.query(insertSql, [student_id, 'present'], (insertErr) => {
-      if (insertErr) {
-        console.error('Attendance insert failed:', insertErr);
-        return res.status(500).send('Error recording attendance');
+          student_id,
+
+          course_id
+
+      ],
+
+      (checkErr, checkResult) => {
+
+          if (checkErr) {
+
+              console.error(checkErr);
+
+              return res.status(500).send('Error checking attendance');
+
+          }
+
+          if (checkResult.length > 0) {
+
+              return res
+
+                  .status(409)
+
+                  .send('Attendance already recorded for this course today');
+
+          }
+
+          const insertSql = `
+
+              INSERT INTO attendance
+
+              (
+
+                  student_id,
+
+                  course_id,
+
+                  date,
+
+                  status
+
+              )
+
+              VALUES
+
+              (
+
+                  ?, ?, NOW(), ?
+
+              )
+
+          `;
+
+          db.query(
+
+              insertSql,
+
+              [
+
+                  student_id,
+
+                  course_id,
+
+                  'Present'
+
+              ],
+
+              (insertErr) => {
+
+                  if (insertErr) {
+
+                      console.error(insertErr);
+
+                      return res
+
+                          .status(500)
+
+                          .send('Error recording attendance');
+
+                  }
+
+                  res.send('Attendance recorded successfully');
+
+              }
+
+          );
+
       }
-      res.send('Attendance recorded successfully');
-    });
-  });
+
+  );
+
 });
 
 // Get attendance history
 app.get('/attendance-history', (req, res) => {
+
   const sql = `
-    SELECT a.id, a.student_id, a.date, a.status,
-           s.name, s.matric_no, s.department
-    FROM attendance a
-    LEFT JOIN students s ON s.id = a.student_id
-    ORDER BY a.date DESC
+    SELECT
+
+      attendance.id,
+
+      attendance.date,
+
+      attendance.status,
+
+      students.id AS student_id,
+
+      students.name,
+
+      students.matric_no,
+
+      students.department,
+
+      students.level,
+
+      courses.course_code,
+
+      courses.course_title,
+
+      sessions.session_name
+
+    FROM attendance
+
+    LEFT JOIN students
+      ON attendance.student_id = students.id
+
+    LEFT JOIN courses
+      ON attendance.course_id = courses.id
+
+    LEFT JOIN sessions
+      ON students.session_id = sessions.id
+
+    ORDER BY attendance.date DESC
+
     LIMIT 100
   `;
 
   db.query(sql, (err, result) => {
+
     if (err) {
-      console.error('Attendance history query failed:', err);
+
+      console.error(err);
+
       return res.status(500).json([]);
+
     }
+
     res.json(result);
+
   });
+
 });
 
 app.get("/attendance-history-csv", (req, res) => {
@@ -628,32 +853,163 @@ app.get("/attendance-summary-csv", (req, res) => {
 
 });
 app.post('/register', (req, res) => {
-  const { matric_no, name, department, face_data, face_descriptor } = req.body;
 
-  if (!face_descriptor || !Array.isArray(face_descriptor) || face_descriptor.length !== 128) {
+  const {
+
+    matric_no,
+
+    name,
+
+    department,
+
+    level,
+
+    session_id,
+
+    face_data,
+
+    face_descriptor
+
+  } = req.body;
+
+
+  if (
+    !face_descriptor ||
+    !Array.isArray(face_descriptor) ||
+    face_descriptor.length !== 128
+  ) {
+
     console.error("Invalid face descriptor received:", face_descriptor);
+
     return res.status(400).send("Invalid face descriptor");
+
   }
 
-  // convert descriptor array to string
+
   const descriptorJSON = JSON.stringify(face_descriptor);
 
+
   const sql = `
-    INSERT INTO students 
-    (matric_no, name, department, face_data, face_descriptor) 
-    VALUES (?, ?, ?, ?, ?)
+
+      INSERT INTO students
+
+      (
+
+        matric_no,
+
+        name,
+
+        department,
+
+        level,
+
+        session_id,
+
+        face_data,
+
+        face_descriptor
+
+      )
+
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+
   `;
 
-  db.query(sql, [matric_no, name, department, face_data, descriptorJSON], (err) => {
-    if (err) {
-      console.error(err);
-      res.send("Error saving student");
-    } else {
-      res.send("Student + Face registered successfully");
+
+  db.query(
+
+    sql,
+
+    [
+
+      matric_no,
+
+      name,
+
+      department,
+
+      level,
+
+      session_id,
+
+      face_data,
+
+      descriptorJSON
+
+    ],
+
+    (err) => {
+
+      if (err) {
+
+        console.error(err);
+
+        return res.status(500).send("Error saving student");
+
+      }
+
+      res.send("Student registered successfully");
+
     }
-  });
+
+  );
+
+});
+  // ===============================
+// Get all courses
+// ===============================
+
+app.get('/courses', (req, res) => {
+
+    const sql = `
+        SELECT *
+        FROM courses
+        ORDER BY course_code
+    `;
+
+    db.query(sql, (err, results) => {
+
+        if (err) {
+
+            console.error(err);
+
+            return res.status(500).json([]);
+
+        }
+
+        res.json(results);
+
+    });
+
 });
 
+// ===============================
+// Get all sessions
+// ===============================
+
+app.get('/sessions', (req, res) => {
+
+    const sql = `
+        SELECT *
+        FROM sessions
+        ORDER BY session_name DESC
+    `;
+
+    db.query(sql, (err, results) => {
+
+        if (err) {
+
+            console.error(err);
+
+            return res.status(500).json([]);
+
+        }
+
+        res.json(results);
+
+    });
+
+});
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
 });

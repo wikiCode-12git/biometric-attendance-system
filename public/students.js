@@ -20,6 +20,19 @@ document.addEventListener('DOMContentLoaded', async function () {
     return response.json();
   };
 
+    const fetchSessions = async () => {
+
+  const response = await fetch('/sessions');
+
+  if (!response.ok) {
+
+    throw new Error('Failed to load sessions');
+
+  }
+
+  return response.json();
+
+};
   const renderStudents = (students) => {
     if (students.length === 0) {
       studentsList.innerHTML = '<p style="text-align: center; color: #64748b; padding: 24px;">No students found.</p>';
@@ -41,6 +54,47 @@ document.addEventListener('DOMContentLoaded', async function () {
           <div class="student-field">
             <label>Department</label>
             <input class="department-input" value="${student.department || ''}" />
+            <div class="student-field">
+  <label>Level</label>
+  <select class="level-input">
+
+    <option value="ND1" ${student.level == 'ND1' ? 'selected' : ''}>ND1</option>
+
+    <option value="ND2" ${student.level == 'ND2' ? 'selected' : ''}>ND2</option>
+
+    <option value="HND1" ${student.level == 'HND1' ? 'selected' : ''}>HND1</option>
+
+    <option value="HND2" ${student.level == 'HND2' ? 'selected' : ''}>HND2</option>
+
+    <option value="POST HND" ${student.level == 'POST HND' ? 'selected' : ''}>POST HND</option>
+
+  </select>
+</div>
+      <div class="student-field">
+
+<label>Academic Session</label>
+
+<select class="session-input">
+
+${allSessions.map(session => `
+
+<option
+
+value="${session.id}"
+
+${student.session_id == session.id ? 'selected' : ''}
+
+>
+
+${session.session_name}
+
+</option>
+
+`).join('')}
+
+</select>
+
+</div>
           </div>
         </div>
         <div class="student-actions">
@@ -64,11 +118,37 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
   };
 
-  const updateStudent = async (id, matric_no, name, department) => {
+  const updateStudent = async (
+
+    id,
+
+    matric_no,
+
+    name,
+
+    department,
+
+    level,
+
+    session_id
+
+) => {
     const response = await fetch(`/students/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ matric_no, name, department })
+      body: JSON.stringify({
+
+    matric_no,
+
+    name,
+
+    department,
+
+    level,
+
+    session_id
+
+})
     });
     if (!response.ok) {
       const message = await response.text();
@@ -100,14 +180,27 @@ document.addEventListener('DOMContentLoaded', async function () {
   };
 
   let allStudents = [];
-  try {
-    allStudents = await fetchStudents();
-    renderStudents(allStudents);
-  } catch (err) {
-    console.error('Students load failed:', err);
-    setStatus('Unable to load students. See console for details.', 'error');
-    return;
-  }
+
+  let allSessions = [];
+ try {
+
+  allStudents = await fetchStudents();
+
+  allSessions = await fetchSessions();
+
+  renderStudents(allStudents);
+
+}
+
+catch (err) {
+
+  console.error(err);
+
+  setStatus('Unable to load data.', 'error');
+
+  return;
+
+}
 
   searchInput.addEventListener('input', () => applySearch(allStudents));
 
@@ -119,11 +212,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     const matricInput = studentItem.querySelector('.matric-input');
     const nameInput = studentItem.querySelector('.name-input');
     const departmentInput = studentItem.querySelector('.department-input');
-
+    const levelInput = studentItem.querySelector('.level-input');
+    const sessionInput = studentItem.querySelector('.session-input');
+    
     if (target.classList.contains('save-btn')) {
       const matric_no = matricInput.value.trim();
       const name = nameInput.value.trim();
       const department = departmentInput.value.trim();
+      const level = levelInput.value;
+      const session_id = sessionInput.value;
 
       if (!matric_no || !name || !department) {
         setStatus('Matric number, name, and department are required.', 'error');
@@ -131,7 +228,21 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
 
       try {
-        await updateStudent(id, matric_no, name, department);
+        await updateStudent(
+
+    id,
+
+    matric_no,
+
+    name,
+
+    department,
+
+    level,
+
+    session_id
+
+);
         setStatus('Student updated successfully.', 'success');
         allStudents = await fetchStudents();
         applySearch(allStudents);
